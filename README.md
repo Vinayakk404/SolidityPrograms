@@ -93,14 +93,9 @@ For your PR to count it must be:
 
 
 ---
-##What to contribute
-PLease feel free to contribute any Solidity programs 
-```javascript
-if (isAwesome) {
-  // thanks in advance :p
-  starThisRepository();
-}
-```
+## What to contribute
+PLease feel free to contribute any Solidity projects that you have been working on
+
 
 ---
 
