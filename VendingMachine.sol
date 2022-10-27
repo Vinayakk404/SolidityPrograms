@@ -1,29 +1,34 @@
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.11;
 
-contract Storage
-{
+contract VendingMachine {
+
+    // state variables
     address public owner;
-    mapping(address=>uint)public balances;
-    constructor() 
-    {
-        owner=msg.sender;
-        balances[address(this)]=100;
+    mapping (address => uint) public donutBalances;
+
+    // set the owner as th address that deployed the contract
+    // set the initial vending machine balance to 100
+    constructor() {
+        owner = msg.sender;
+        donutBalances[address(this)] = 100;
     }
-    function getBalance() public view returns(uint)
-    {
-        return   balances[address(this)];
+
+    function getVendingMachineBalance() public view returns (uint) {
+        return donutBalances[address(this)];
     }
-    function reStock(uint  value) public  returns(uint)
-    {
-        require(msg.sender==owner,"Not the owner");
-          balances[address(this)]=  balances[address(this)]+value;
-          return   balances[address(this)];
+
+    // Let the owner restock the vending machine
+    function restock(uint amount) public {
+        require(msg.sender == owner, "Only the owner can restock.");
+        donutBalances[address(this)] += amount;
     }
-    function purchase(uint amount) public payable
-    {
-        require(msg.value<=amount*2 ether,"Pay at least 2 ether");
-        require(balances[address(this)]>amount,"No balance in the wallet");
-        balances[address(this)]-=amount;
-        balances[msg.sender]+=amount;
+
+    // Purchase donuts from the vending machine
+    function purchase(uint amount) public payable {
+        require(msg.value >= amount * 2 ether, "You must pay at least 2 ETH per donut");
+        require(donutBalances[address(this)] >= amount, "Not enough donuts in stock to complete this purchase");
+        donutBalances[address(this)] -= amount;
+        donutBalances[msg.sender] += amount;
     }
 }
